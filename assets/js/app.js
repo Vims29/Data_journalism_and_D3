@@ -1,4 +1,4 @@
-// @TODO: YOUR CODE HERE!
+// @TODO: YOUR CODE HERE! Bimi Bisht
 var svgWidth = 700;
 var svgHeight = 500;
 
@@ -12,7 +12,7 @@ var margin = {
 var width = svgWidth - margin.left - margin.right;
 var height = svgHeight - margin.top - margin.bottom;
 
-// Create an SVG wrapper, append an SVG group that will hold our chart, and shift the latter by left and top margins.
+// Creating an SVG wrapper, append an SVG group that will hold our chart, and shift the latter by left and top margins.
 var svg = d3.select("#scatter")
   .append("svg")
   .attr("width", svgWidth)
@@ -21,18 +21,18 @@ var svg = d3.select("#scatter")
 var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-// Import Data
+// Importing Data
 d3.csv("assets/data/data.csv")
   .then(function(chartData) {
 
-    // Step 1: Parse Data/Cast as numbers
+    //  Parse Data/Cast as numbers
     // ==============================
     chartData.forEach(function(data) {
       data.age = +data.age;
       data.smokes = +data.smokes;
     });
 
-    // Step 2: Create scale functions
+    //  Create scale functions
     // ==============================
     var xLinearScale = d3.scaleLinear()
       .domain([30, d3.max(chartData, d => d.age)])
@@ -42,12 +42,12 @@ d3.csv("assets/data/data.csv")
       .domain([5, d3.max(chartData, d => d.smokes)])
       .range([height, 0]);
 
-    // Step 3: Create axis functions
+    //  Create axis functions
     // ==============================
     var bottomAxis = d3.axisBottom(xLinearScale);
     var leftAxis = d3.axisLeft(yLinearScale);
 
-    // Step 4: Append Axes to the chart
+    //  Append Axes to the chart
     // ==============================
     chartGroup.append("g")
       .attr("transform", `translate(0, ${height})`)
@@ -56,7 +56,7 @@ d3.csv("assets/data/data.csv")
     chartGroup.append("g")
       .call(leftAxis);
 
-    // Step 5: Create Circles
+    //  Create Circles
     // ==============================
     var circlesGroup = chartGroup.selectAll("circle")
     .data(chartData)
@@ -86,19 +86,8 @@ d3.csv("assets/data/data.csv")
         return (`${d.abbr}`)
       });
 
-  // // var circleAbbr = chartGroup.selectAll("circle")
-  // chartGroup.selectAll("circle")
-  //   .append('text')
-    // .attr("cx", d => xLinearScale(d.age))
-    // .attr("cy", d => yLinearScale(d.smokes))
-  //   .attr("r", "15")
-  //   .attr("color", "black")
-  //   .attr("font-size", "20")
-    // .text(function(d){
-    //   return (`${d.abbr}`)
-    // });
  
-   // Step 6: Initialize tool tip
+   //  Initialize tool tip
     // ==============================
     var toolTip = d3.tip()
       .attr("class", "tooltip")
@@ -107,21 +96,21 @@ d3.csv("assets/data/data.csv")
         return (`ID: ${d.id}<br>Age: ${d.age}<br>Smokes: ${d.smokes}`);
       });
 
-    // Step 7: Create tooltip in the chart
+    //  Create tooltip in the chart
     // ==============================
     chartGroup.call(toolTip);
 
-    // Step 8: Create event listeners to display and hide the tooltip
+    //  Create event listeners to display and hide the tooltip
     // ==============================
     circlesGroup.on("mouseover", function(data) {
       toolTip.show(data, this);
     })
-      // onmouseout event
+      // mouseout 
       .on("mouseout", function(data, index) {
         toolTip.hide(data);
       });
 
-    // Create axes labels
+    // Create axis labels
     chartGroup.append("text")
       .attr("transform", "rotate(-90)")
       .attr("y", 0 - margin.left )
